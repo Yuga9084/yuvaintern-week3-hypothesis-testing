@@ -1,0 +1,105 @@
+rows 244 missing 0 duplicates 1
+       total_bill     tip    size  tip_pct
+count      244.00  244.00  244.00   244.00
+mean        19.79    3.00    2.57    16.08
+std          8.90    1.38    0.95     6.11
+min          3.07    1.00    1.00     3.56
+25%         13.35    2.00    2.00    12.91
+50%         17.80    2.90    2.00    15.48
+75%         24.13    3.56    3.00    19.15
+max         50.81   10.00    6.00    71.03
+IQR upper bound 28.5 n outliers 4 max 71.0
+skew 3.33 kurtosis 26.55
+Shapiro tip_pct ShapiroResult(statistic=np.float64(0.7994275939249664), pvalue=np.float64(5.118350121040186e-17))
+
+H1 Lunch vs Dinner: n=68/176 means 16.41/15.95 sd 4.02/6.75
+  diff=0.46 Welch t=0.654 df=200.9 p=0.5138 CI95=[-0.93,1.85] bootCI=[-0.94,1.81] d=0.075
+  MWU p=0.2303 Levene p=0.1201 Shapiro p=0.4852/3.76e-15
+
+H2 Smoker vs Non-smoker: n=93/151 means 16.32/15.93 sd 8.51/3.99
+  diff=0.39 Welch t=0.411 df=117.3 p=0.6817 CI95=[-1.48,2.25] bootCI=[-1.30,2.33] d=0.063
+  MWU p=0.5607 Levene p=0.0002 Shapiro p=5.93e-11/0.3062
+
+H3 Female vs Male payer: n=87/157 means 16.65/15.77 sd 5.36/6.48
+  diff=0.88 Welch t=1.143 df=206.8 p=0.2542 CI95=[-0.64,2.41] bootCI=[-0.61,2.38] d=0.145
+  MWU p=0.1352 Levene p=0.4986 Shapiro p=4.718e-06/3.224e-15
+
+Power: min detectable d (lunch/dinner) = 0.402 => pct points 2.45
+Achieved power for observed d: 0.082
+
+H4 by day:
+      count   mean   std
+day                     
+Thur     62  16.13  3.87
+Fri      19  16.99  4.77
+Sat      87  15.32  5.13
+Sun      76  16.69  8.47
+ANOVA F(3,240)=0.848 p=0.4688 eta2=0.0105 | Kruskal H=1.837 p=0.6069 | Levene p=0.170
+Multiple Comparison of Means - Tukey HSD, FWER=0.05
+===================================================
+group1 group2 meandiff p-adj   lower  upper  reject
+---------------------------------------------------
+   Fri    Sat  -1.6761 0.7004  -5.681 2.3287  False
+   Fri    Sun  -0.3016 0.9975  -4.358 3.7549  False
+   Fri   Thur  -0.8637 0.9494 -5.0108 3.2833  False
+   Sat    Sun   1.3746 0.4806 -1.1086 3.8577  False
+   Sat   Thur   0.8124 0.8545 -1.8161 3.4409  False
+   Sun   Thur  -0.5622 0.9498 -3.2686 2.1443  False
+---------------------------------------------------
+
+H5a bill vs tip $: r=0.676 p=6.69e-34 CI=[0.601 0.739]
+H5b bill vs tip%: pearson r=-0.339 p=5.85e-08 CI=[-0.445 -0.223] | spearman rho=-0.321 p=3.07e-07
+{'Intercept': 20.677, 'total_bill': -0.232} [[18.904, 22.449], [-0.314, -0.151]] R2 0.115
+tip$ ~ bill: {'Intercept': 0.92, 'total_bill': 0.105} [[0.606, 1.235], [0.091, 0.12]] R2 0.457
+
+H6 chi-square:
+party    Large (3+)  Small (1-2)
+daytype                         
+Weekday          15           66
+Weekend          69           94
+expected
+ [[ 27.9  53.1]
+ [ 56.1 106.9]]
+chi2(1)=13.592 p=0.0002 Cramer's V=0.236
+party    Large (3+)  Small (1-2)
+daytype                         
+Weekday        18.5         81.5
+Weekend        42.3         57.7
+std residuals
+ [[-2.44  1.77]
+ [ 1.72 -1.25]]
+Fisher exact p 0.0002 odds ratio 0.31
+
+H7 OLS:
+ ====================================================================================
+                       coef    std err          t      P>|t|      [0.025      0.975]
+------------------------------------------------------------------------------------
+Intercept            0.8038      0.353      2.279      0.024       0.109       1.499
+C(sex)[T.Male]      -0.0324      0.142     -0.229      0.819      -0.311       0.247
+C(smoker)[T.Yes]    -0.0864      0.147     -0.589      0.556      -0.375       0.202
+C(time)[T.Lunch]     0.0681      0.445      0.153      0.878      -0.808       0.944
+C(day)[T.Sat]       -0.1215      0.310     -0.392      0.695      -0.732       0.489
+C(day)[T.Sun]       -0.0255      0.321     -0.079      0.937      -0.658       0.608
+C(day)[T.Thur]      -0.1623      0.393     -0.412      0.680      -0.937       0.613
+total_bill           0.0945      0.010      9.841      0.000       0.076       0.113
+size                 0.1760      0.090      1.966      0.051      -0.000       0.352
+====================================================================================
+R2 0.47 adjR2 0.452
+HC3 robust p-values: {'Intercept': np.float64(0.0198), 'C(sex)[T.Male]': np.float64(0.8032), 'C(smoker)[T.Yes]': np.float64(0.6142), 'C(time)[T.Lunch]': np.float64(0.8105), 'C(day)[T.Sat]': np.float64(0.6269), 'C(day)[T.Sun]': np.float64(0.9246), 'C(day)[T.Thur]': np.float64(0.5049), 'total_bill': np.float64(0.0), 'size': np.float64(0.1361)}
+Breusch-Pagan p: 0.0
+Residual Shapiro p: 6.706040885873211e-06
+
+Summary (raw / Holm):
+  H1 Lunch vs Dinner           raw=0.5138 holm=1 -> fail to reject
+  H2 Smoker vs Non-smoker      raw=0.6817 holm=1 -> fail to reject
+  H3 Female vs Male            raw=0.2542 holm=1 -> fail to reject
+  H4 Day of week (ANOVA)       raw=0.4688 holm=1 -> fail to reject
+  H5 Bill vs tip %             raw=5.848e-08 holm=3.509e-07 -> REJECT H0
+  H6 Weekend vs party size     raw=0.0002272 holm=0.001136 -> REJECT H0
+
+Sensitivity (outliers removed, n=240): H1 p=0.0699 H2 p=0.3665 H3 p=0.1592 H4 p=0.2224 H5 r=-0.327 p=2.27e-07
+  group means no-outlier time: {'Dinner': 15.31, 'Lunch': 16.41} sd {'Dinner': 4.68, 'Lunch': 4.02}
+  H1 diff 1.1 CI [-0.09  2.3 ]  H2 diff -0.59 [-1.89  0.7 ]  H3 0.85 [-0.33  2.03]
+  Levene smoker no-outlier 0.0
+
+figures saved
